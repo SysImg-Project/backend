@@ -1,0 +1,19 @@
+/*
+// Programador: Paulo Griebler Júnior
+// Data de início: 06/12/2022
+// Objetivo: CSS usado para um projeto do sistema 'Requisitos'
+*/
+
+* {
+	background-color: DarkSlateGray; /*Indigo; /*Gainsboro; /*DarkKhaki; /*PaleTurquoise; /*LightSlateGray;*/
+	color: Gold;
+	font: 20px Roboto, sans-serif;
+	}
+
+table, th, td { /*precisa incluir th e td aqui senão eles não terão bordas*/
+	border: 1px solid white;
+	border-collapse: collapse;
+	}
+	
+
+

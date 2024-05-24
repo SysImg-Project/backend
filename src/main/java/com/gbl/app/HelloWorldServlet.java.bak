@@ -1,0 +1,46 @@
+// UNISINOS
+// Curso: Ciência da Computação - Híbrido
+// Atividade Acadêmica - Estágio
+// Módulo X
+// Tarefa:
+// Data: 07/04/2024
+// Professor:
+// Aluno: Paulo Griebler Júnior
+// Registro Acadêmico: 1930669
+
+// Abrir com: geany .java &
+// Compilar com: javac .java
+// Rodar com: java Principal
+
+
+//https://www.devmedia.com.br/introducao-ao-desenvolvimento-de-aplicacoes-web/29798
+
+//Para criamos um Servlet, precisamos realizar os seguintes passos:
+
+//Criar uma classe Java;
+//Fazer com que esta classe herde da classe javax.servlet.http.HttpServlet;
+//Reescrever o método service(), de HttpServlet;
+//Utilizar a anotação @WebServlet para definir a URL que será utilizada para acessar este Servlet no contêiner web ou realizar esta configuração diretamente no web.xml.
+
+package com.gbl.app;
+
+//import javax.servlet.*; // Parece que o nome mudou para 'Jakarta'
+import jakarta.servlet.*;
+
+@WebServlet("/HelloWorld")
+public class HelloWorldServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public HelloWorldServlet()
+    {
+        super();
+    }
+
+    protected void service(HttpServletRequest request,  HttpServletResponse response)
+      throws ServletException, IOException
+    {
+         PrintWriter out = response.getWriter();
+         out.print("<HTML><H1>Hello World!</H1></HTML>");
+         out.close();
+  }
+}

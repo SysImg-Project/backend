@@ -1,0 +1,6 @@
+//Programador: Paulo Griebler Júnior
+//Data de Início: __/01/2023
+
+Glossário:
+
+	// Lista de termos usados no programa

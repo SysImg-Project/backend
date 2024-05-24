@@ -1,0 +1,366 @@
+// Histórico
+// Programador:
+// Data de início: 07/04/2024
+// Objetivo: descrever os passos na construção de um projeto
+
+
+25/03/2024:
+	Como foi criado o projeto "inicio" no Maven ?
+	- mvn archetype:generate -DgroupId=com.gbl.app -DartifactId=inicio -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=true
+	
+	Entrar no diretório do projeto "inicio":
+	- cd inicio
+	
+	### Tudo abaixo daqui deve ser executado dentro do dirtório do projeto "inicio"
+	
+	Como foi compilado (construído - "build") o projeto "inicio" no Maven ?
+	
+	- mvn package
+	
+	Fases de um projeto no Maven:
+	Available lifecycle phases are: validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy, pre-clean, clean, post-clean, pre-site, site, post-site, site-deploy
+	
+		
+	Como testar (rodar) o projeto "inicio" ?
+	java -cp target/inicio-1.0-SNAPSHOT.jar com.gbl.app.App
+	java -cp target/inicio-1.0-SNAPSHOT.jar com.gbl.app.HelloWorldServlet
+		
+	Limpar um projeto no Maven:
+	
+	-mvn clean
+	
+	Construir um projeto no Maven:
+	
+	- mvn compile
+		
+	[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] Source option 7 is no longer supported. Use 8 or later.
+[ERROR] Target option 7 is no longer supported. Use 8 or later.
+[INFO] 2 errors 
+
+	Solução: mudei no arquivo 'pom.xml':
+	DE:
+	<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+  
+  PARA:
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+  
+  Checar a árvore de dependências usando Maven:
+  
+  - mvn dependency:tree
+  
+  08/04/2024:
+  griebler@mercurialis:/mnt/astrolabium/var/www/Unisinos/Atividade_Acadêmica/2024-1/Estágio/SysImg/Teste_Roots_Paulo/inicio$ java -cp target/inicio-1.0-SNAPSHOT.jar com.gbl.app.HelloWorldServlet
+  
+	Erro: Não foi possível localizar nem carregar a classe principal com.gbl.app.HelloWorldServlet
+	Causada por: java.lang.NoClassDefFoundError: jakarta/servlet/http/HttpServlet
+  
+  //https://pt.stackoverflow.com/questions/46982/erro-java-lang-noclassdeffounderror-caused-by-java-lang-classnotfoundexception
+  A exceção NoClassDefFoundError é lançada quando a JVM não é capaz de encontrar uma determinada classe em tempo de execução que estava disponível em tempo de compilação, exemplificando, se um método ou qualquer membro estático de uma classe não estiver disponível em runtime, NoClassDefFoundError é lançado.
+  
+  
+  //https://docs.oracle.com/javase/tutorial/deployment/jar/view.html
+  Viewing the Contents of a JAR File
+	The basic format of the command for viewing the contents of a JAR file is:
+
+	jar tf jar-file
+	Let's look at the options and argument used in this command:
+
+	The t option indicates that you want to view the table of contents of the JAR file.
+	The f option indicates that the JAR file whose contents are to be viewed is specified on the command line.
+	The jar-file argument is the path and name of the JAR file whose contents you want to view.
+	The t and f options can appear in either order, but there must not be any space between them.
+
+	This command will display the JAR file's table of contents to stdout.
+
+	You can optionally add the verbose option, v, to produce additional information about file sizes and last-modified dates in the output.
+	
+	griebler@mercurialis:/mnt/astrolabium/var/www/Unisinos/Atividade_Acadêmica/2024-1/Estágio/SysImg/Teste_Roots_Paulo/inicio$ jar tf target/inicio-1.0-SNAPSHOT.jar
+	
+	META-INF/MANIFEST.MF
+	META-INF/
+	com/
+	com/gbl/
+	com/gbl/app/
+	META-INF/maven/
+	META-INF/maven/com.gbl.app/
+	META-INF/maven/com.gbl.app/inicio/
+	com/gbl/app/App.class
+	com/gbl/app/HelloWorldServlet.class <-- Classe de interesse !!!
+	META-INF/maven/com.gbl.app/inicio/pom.xml
+	META-INF/maven/com.gbl.app/inicio/pom.properties
+	
+	//https://docs.oracle.com/javase/tutorial/deployment/jar/run.html
+	JAR Files as Applications
+	You can run JAR packaged applications with the Java launcher (java command). The basic command is:
+	
+	java -jar jar-file
+	The -jar flag tells the launcher that the application is packaged in the JAR file format. You can only specify one JAR file, which must contain all of the application-specific code.
+	
+	Before you execute this command, make sure that the runtime environment has information about which class within the JAR file is the application's entry point.
+	
+	To indicate which class is the application's entry point, you must add a Main-Class header to the JAR file's manifest. The header takes the form:
+	
+	Main-Class: classname
+	The header's value, classname, is the name of the class that is the application's entry point.
+	
+	For more information, see the Setting an Application's Entry Point section.
+	
+	When the Main-Class is set in the manifest file, you can run the application from the command line:
+	
+	java -jar app.jar
+	To run the application from the JAR file that is in another directory, you must specify the path of that directory: java -jar path/app.jar
+	
+	griebler@mercurialis:/mnt/astrolabium/var/www/Unisinos/Atividade_Acadêmica/2024-1/Estágio/SysImg/Teste_Roots_Paulo/inicio$ java -jar target/inicio-1.0-SNAPSHOT.jar
+	
+	nenhum atributo de manifesto principal em target/inicio-1.0-SNAPSHOT.jar
+	
+	###Mudei a base do código para o descrito em:
+	https://zetcode.com/java/servlet/
+	
+	Usa Maven, Jakarta e Jetty(servidor web -- semelhante à Tomcat).
+	Usa empacotamento 'war'.
+	
+	Chama o Jetty com:
+	 - mvn jetty:run	
+	#FUNCIONOU !!!
+	
+	Funciona com Tomcat tb !!
+	Desativar o carregamento do Jetty no pom.xml.
+	Só ativar no pom.xml o carregamento do Tomcat:
+	 <!-- Em: https://repo.maven.apache.org/maven2/ -->
+            <!-- org/eclipse/tomcat/4.1.230-v20070531 -->
+            <plugin>
+                <groupId>org.eclipse</groupId>
+                <artifactId>tomcat</artifactId>
+                <version>4.1.230-v20070531</version>
+                <configuration>
+                    <webApp>
+                        <contextPath>/app</contextPath>
+                    </webApp>
+                </configuration>
+            </plugin>
+	
+	 - mvn tomcat:run
+	 
+	 //https://en.wikipedia.org/wiki/Apache_Tomcat
+	 Tomcat 4.x was released with Catalina (a servlet container), Coyote (an HTTP connector) and Jasper (a JSP engine).
+
+	14/04/2024:
+	O que significa jakarta/servlet/jakarta.servlet-api/6.1.0-M2 ? -- Especificamente o M2 ?
+
+	//https://www.baeldung.com/spring-projects-version-naming
+	A Milestone release (M1, M2, M3, …) marks a significant stage in the release process. The team builds this artifact when a development iteration is completed and deploys it to https://repo.spring.io/ui/native/milestone.
+
+	A Release Candidate (RC1, RC2, RC3, …) is the last step before building the final release. To minimize code changes, only bug fixes should occur at this stage. It is also deployed to https://repo.spring.io/ui/native/milestone.
+
+	###História das versões do pacote 'servlet':
+
+	Segundo:
+	//https://mvnrepository.com/artifact/javax.servlet/servlet-api
+	inicialmente o pacote 'javax.servlet' é que continha as classes do 'servlet' e foi mantido neste pacote desde as versões 2.2.x (2005-11-08) até a versão 3.0-alpha-1 (2008-04-17).
+	//https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+	Depois o nome do pacote que continha as classes do 'servlet' mudou para 'javax.servlet-api' que perdurou pelas versões 3.0.1 (2011-07-12) até 4.0.1 (2018-04-20).
+	//https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
+	Finalmente desde a versão 4.0.2 (2019-01-14) até a versão 6.1.0-M2 (2024-02-27) o nome do pacote é 'jakarta.servlet.api'.
+
+	Então atualmente uso a versão mais atual do Maven para as classes do 'servlet' que é:
+	<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+	<dependency>
+		<groupId>jakarta.servlet</groupId>
+		<artifactId>jakarta.servlet-api</artifactId>
+		<version>6.1.0-M2</version>
+		<scope>provided</scope>
+	</dependency>
+
+	26/04/2024:
+	 - Estudando o Hibernate.
+	 https://docs.jboss.org/hibernate/orm/6.5/quickstart/html_single/
+
+
+	 Dependências para Maven:
+
+	<dependency>
+		<groupId>org.hibernate.orm</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>6.5.0.Final</version>
+	</dependency>
+
+
+		###CRIADO NA MARIADB CONSOLE PELA CONTA ROOT NO ASTROLABIUM:
+        CREATE DATABASE sysimg;
+        CREATE DATABASE sysimg_des;
+        CREATE USER 'sysimg'@'localhost' IDENTIFIED BY 'n2Qi4RWl';
+        CREATE USER 'sysimg_des'@'localhost' IDENTIFIED BY 'D8yx3Rk2';
+        GRANT ALL PRIVILEGES ON sysimg.* TO 'sysimg'@'localhost' WITH GRANT OPTION;
+        GRANT ALL PRIVILEGES ON sysimg_des.* TO 'sysimg_des'@'localhost' WITH GRANT OPTION;
+
+        Para evitar:
+        java.sql.SQLException: null,  message from server: "Host '192.168.1.110' is not allowed to connect to this MariaDB server" -- porque agora estou conectando de outro computador
+
+
+	27/04/2024:
+		- Dando um tempo nos 'ORMs' e fazendo a conexão com  MySQL usando JDBC (Java Database Connector).
+		 - Baseado em:
+		 https://www.marcobehler.com/guides/java-databases
+
+	28/04/2024:
+		- Continuando no JDBC... classe Pessoa, Usuario, Paciente, Medico
+		- E os respectivos CRUDS
+
+		### RODAR TESTES NO MAVEN:
+		- mvn test --> não deve chamar com o Jetty ou Tomcat (ainda) -- talvez com o servidor rodando só se for com Selenium
+
+	30/04/2024:
+		- Iniciando com 'endpoints':
+			- Localizados na pasta app/endpoints
+			- Endpoints de interesse:
+				- endpoint/reset_db:
+
+				- endpoint/create_db:
+
+				- endpoint/populate_db:
+
+				- endpoint/list_users:
+				- endpoint/list_users/condition (? precisa ?)
+				- CRUD p/ usuario:
+				- endpoint/create_user:
+				- endpoint/read_user: (find_user ?)
+				- endpoint/update_user:
+				- endpoint/delete_user:
+
+				- endpoint/create/*: (serve para qq ator)
+
+				- CRUD p/ paciente:
+
+				- CRUD p/ exame
+
+				- CRUD p
+	
+
+	01/05/2024:
+
+	- Tentando resolver problema do CORS.
+	- Requisição cross-origin bloqueada: A diretiva Same Origin (mesma origem) não permite a leitura do recurso remoto em http://168.0.126.147:64100/endpoint/crud (motivo: falta cabeçalho 'Access-Control-Allow-Origin' no CORS). Código de status: 404
+	# https://gist.github.com/amccarty/66488da19fef8510d9bcaa72d94b218b
+	# amccarty/CORS config for jetty
+	# /path/to/server/solr-webapp/webapp/WEB-INF/web.xml
+	- Coloquei um arquivo em webapp/WEB-INF/web.xml --> mas que dá uns erros na carga do Jetty:
+	- [ERROR] Fatal SAX Parse Issue @null line:1 col:1 : org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.
+[WARNING] Failed startup of context o.e.j.m.p.MavenWebAppContext@5817f1ca{/app,[file:///var/www/Unisinos/Atividade_Acad%C3%AAmica/2024-1/Est%C3%A1gio/SysImg/codigo/backend/v99_1_0/src/main/webapp/],STOPPED}{file:///var/www/Unisinos/Atividade_Acad%C3%AAmica/2024-1/Est%C3%A1gio/SysImg/codigo/backend/v99_1_0/src/main/webapp/}
+org.xml.sax.SAXParseException: Content is not allowed in prolog.
+
+	02/05/2024:
+
+	- Ainda no problema do CORS:
+	 - A permissão deve ser setada no servidor e não no cliente !
+	 - Esse header deve aparecer na resposta do servidor para o cliente:
+		Access-Control-Allow-Origin: *
+	 - Quer dizer que o servidor aceita pedidos de QUALQUER origem !
+	 (o que pode ser um risco de segurança !)
+	 - Poderia mudar para:
+		"Access-Control-Allow-Origin": "http://168.0.126.147:65100/"
+	 - O que especifica que só aceita requisições do cliente de teste do backend !
+
+	 https://www.smartfoxserver.com/forums/viewtopic.php?t=18154
+
+	Em webapp/WEB-INF/web.xml:
+	...
+	<init-param>
+		<param-name>allowedOrigins</param-name>
+		<param-value>*</param-value>
+	</init-param>
+	...
+
+	Dando erro de parsing:
+	[ERROR] Fatal SAX Parse Issue @null line:20 col:2
+	org.xml.sax.SAXParseException: The markup in the document following the root element must be well-formed.
+
+
+	- Possível solução:
+	https://stackoverflow.com/questions/14390577/how-to-add-servlet-filter-with-embedded-jetty
+
+	03/05/2024
+		- Ainda com o problema do CORS no servidor...
+
+		# Segundo: https://eclipse.dev/jetty/
+
+Jetty 			| 	Version Servlet 	|	License 							|	Java
+
+Jetty 12.0.x  	|	 6.0, 5.0, 4.0, 3.1 |	JakartaEE 10/jakartaee.servlet.* 	|	Java 17+
+											JakartaEE 9/jakartaee.servlet.*
+											JakartaEE 8/javax.servlet.*
+
+Jetty 11.0.x	|	5.0					|	JakartaEE 9/jakartaee.servlet.*		|	Java 11+
+
+		- Eu estou usando atualmente:
+			- Java 17
+			- Jakarta Servlet 6.1.0-M2
+			- Jetty 11.0.20 --> Jetty 11* não é compativel com Java 17 e nem com Jakarta Servlet 6.* ==> Mas como o Maven2 só disponibiliza o Jetty até a versão 11.0.20, vou começar a usar o jakarta servlet 5.0.0
+		- Realmente, do 'Jetty-Maven-Plugin' só consegui até a versão 11 --> https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin,
+		mas do Jetty Server está disponível até a versão 12.0.8 --> https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server
+
+
+	11/05/2024:
+
+		- depois de muita 'loucuragem' (quase cheguei a escrever um servidor web para java do 0) encontrei o que pode ser a causa do erro de:
+		- Requisição cross-origin bloqueada: A diretiva Same Origin (mesma origem) não permite a leitura do recurso remoto em http://168.0.126.147:64100/endpoint/crud (motivo: falta cabeçalho 'Access-Control-Allow-Origin' no CORS). Código de status: 404
+
+		Causa provável:
+		- Solicitação da URL no cliente:
+			- http://168.0.126.147:64100/endpoint/crud
+		- Onde está o mapeamento da página no servidor:
+			- http://168.0.126.147:64100/app/endpoint/crud --> 'app' tem que remover aqui !!! kkk!
+
+		==> No final deixei o 'app' deu muitos outros erros removendo... fazer isso com mais calma depois. --> tive que adicionar o 'app' no endpoint --> poderia usar o recurso de 'reescrever' a URL para ajustar isso
+
+		O que resolveu o problema do CORS foi o arquivo CORSInterceptor que implementa um filtro que avalia os 'request' e se for do tipo 'OPTIONS' manda como no header da resposta (para este pedido de OPTIONS) os headers que indicam a aceitação do CORS
+
+
+		- Adicionei JSON no pom.xml:
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20240303</version>
+		</dependency>
+
+	12/05/2024:
+
+		-Usar reflexão e anotações para avaliar uma classe e criar um objeto DAO para ela. --> Precisa usar reflexão agora ???
+		- Poderia criar um DAO que faz o acesso à DB e ir resolvendo este problema já...
+
+	13/05/2024:
+		Lidando com o erro:
+		[WARNING] /app/endpoint/crud
+java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.conn" is null
+    at com.gbl.DB.existeATabelaX (DB.java:147)
+    at com.gbl.classes.User.inicializacaoUser (User.java:42)
+    at com.gbl.classes.User.<init> (User.java:28)
+    at com.gbl.app.endpoint.Crud.doPost (Crud.java:169)
+
+		Tentativa de solução:
+		- Reeditar as classes User, Pessoa, Crud e fazer um construtor único.
+
+		Resolvido: o erro era a respeito de usar try-with-resources para acessar a DB.
+		E realmente o stacktrace não mostra a criação construção de um objeto a partir das subclasses.
+
+	19/05/2024:
+		- Liberada a v1.1.0 do backend.
+		- Faz CRUD e list da classe Usuario
+
+
+
+
+
+
+

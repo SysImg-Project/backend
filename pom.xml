@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+            http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>JavaServlet</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <!--<version>6.1.0-M2</version> baixei a versão do servlet para adequar a veesão do Jetty-->
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.32</version>
+        </dependency>
+
+        <!-- https://maven.apache.org/surefire/maven-surefire-plugin/examples/junit-platform.html -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--Adicionado para resolver o problema: java.lang.ClassNotFoundException: org.eclipse.jetty.servlets.CrossOriginFilter
+        https://stackoverflow.com/questions/27608961/eclipse-jetty-plugin-cross-origin-support-class-not-found-->
+        <!--<dependency>
+            <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlets</artifactId>-->
+            <!--<version>${jetty-maven.version}</version> não funcionou -->
+            <!--<version>11.0.20</version>
+            <scope>test</scope>
+            </dependency>  REMOVER -->
+
+        <!--Adicionado para resolver o problema: java.lang.ClassNotFoundException: org.eclipse.jetty.servlets.CrossOriginFilter
+        https://stackoverflow.com/questions/27608961/eclipse-jetty-plugin-cross-origin-support-class-not-found-->
+        <!--https://repo.maven.apache.org/maven2/org/eclipse/jetty/jetty-servlet/11.0.20/-->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>11.0.20</version>
+            <!--<scope>test</scope>-->
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.3</version>
+            </plugin>
+						
+            <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin Jetty atual! (Jan 31, 2024) -->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>11.0.20</version>
+                <configuration>
+                    <httpConnector>
+                        <host>192.168.1.20</host>
+                        <port>4100</port>
+                    </httpConnector>
+                    <webApp>
+                        <contextPath>/app</contextPath>
+                    </webApp>
+                    <scan>10</scan>
+                </configuration>
+            </plugin>
+
+
+
+            
+            <!-- Em: https://repo.maven.apache.org/maven2/ -->
+            <!-- org/eclipse/tomcat/4.1.230-v20070531 -->
+            <!-- versão antiga do Tomcat que era suportado pelo Eclipse -->
+            <!--<plugin>
+                <groupId>org.eclipse</groupId>
+                <artifactId>tomcat</artifactId>
+                <version>4.1.230-v20070531</version>
+                <configuration>
+                    <webApp>
+                        <contextPath>/app</contextPath>
+                    </webApp>
+                </configuration>
+            </plugin>-->
+
+
+             <!-- Em: https://repo.maven.apache.org/maven2/ -->
+            <!-- org/apache/tomcat/tomcat/11.0.0-M9 -->
+            <!--Está tentando fazer isso:  -Downloading from central: https://repo.maven.apache.org/maven2/org/apache/tomcat.tomcat-i18n-pt-BR/11.0.0-M9/tomcat.tomcat-i18n-pt-BR-11.0.0-M9.pom
+            Downloading from central: https://repo.maven.apache.org/maven2/org/apache/tomcat.tomcat/11.0.0-M9/tomcat.tomcat-11.0.0-M9.pom
+
+            Downloading from central: https://repo.maven.apache.org/maven2/org/apache/tomcat/tomcat/11.0.0-M9/tomcat/tomcat-11.0.0-M9.pom
+
+            -->
+
+            <!--<plugin>
+                <groupId>org.apache</groupId>
+                <!##<artifactId>tomcat.tomcat-i18n-pt-BR</artifactId>##>
+                <!##<artifactId>tomcat.tomcat</artifactId>##>
+                <artifactId>tomcat/tomcat</artifactId>
+                <version>11.0.0-M9</version>
+                <configuration>
+                    <webApp>
+                        <contextPath>/app</contextPath>
+                    </webApp>
+                </configuration>
+                </plugin>-->
+
+                <!--https://stackoverflow.com/questions/23775647/how-to-configure-tomcat7-maven-plugin-in-pom-xml -->
+            <!--<plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:8080/manager</url>
+                    <server>localhost</server>
+                    <path>/${project.build.finalName}</path>
+                </configuration>
+            </plugin>-->
+
+        </plugins>
+    </build>
+
+</project>
