@@ -22,116 +22,116 @@ Construído usando a linguagem Java, servidor web Jetty, servlets e banco de dad
 
 
 ### 2 - Defina o IP e a porta desejada:
-    Altere o arquivo `pom.xml`.
-    Na seção de configuração do servidor Jetty:
+Altere o arquivo `pom.xml`.
+Na seção de configuração do servidor Jetty:
 
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.20</version>
-                <configuration>
-                    <httpConnector>
-                        <host>192.168.1.20</host>
-                        <port>4100</port>
-                    </httpConnector>
-                    <webApp>
-                        <contextPath>/app</contextPath>
-                    </webApp>
-                    <scan>10</scan>
-                </configuration>
-            </plugin>
+    <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>11.0.20</version>
+        <configuration>
+            <httpConnector>
+                <host>192.168.1.20</host>
+                <port>4100</port>
+            </httpConnector>
+            <webApp>
+                <contextPath>/app</contextPath>
+            </webApp>
+            <scan>10</scan>
+        </configuration>
+    </plugin>
 
 #### Altere a linha
-    `<host>192.168.1.20</host>` (sugestão para testes)
+`<host>192.168.1.20</host>` (sugestão para testes)
 #### Para
-    `<host>127.0.0.1</host>`
+    <host>127.0.0.1</host>
 
 #### E a linha
-    `<port>4100</port>`
+`<port>4100</port>`
 #### Para
-    `<port>4000</port>` (sugestão para testes)
+    <port>4000</port> (sugestão para testes)
 
 ### 3 - Inicie o servidor Jetty usando o Maven:
-    `mvn Jetty:run`
+    mvn Jetty:run
 
-    Se der certo deve aparecer no console:
-[INFO] Started ServerConnector@6d7677d8{HTTP/1.1, (http/1.1)}{127.0.0.1:4000}
-[INFO] Started Server@2e4b5da1{STARTING}[11.0.20,sto=0] @4139ms
-[INFO] Scan interval sec = 10
+Se der certo deve aparecer no console:<br>
+[INFO] Started ServerConnector@6d7677d8{HTTP/1.1, (http/1.1)}{127.0.0.1:4000}<br>
+[INFO] Started Server@2e4b5da1{STARTING}[11.0.20,sto=0] @4139ms<br>
+[INFO] Scan interval sec = 10<br>
 
 ### 4 - Teste o backend:
 
 #### Opção 1: Instale o backend_de_testes:
- `https://github.com/SysImg-Project/teste_de_backend`
+    https://github.com/SysImg-Project/teste_de_backend
 
 #### Opção 2: (mais prática) Use o cURL:
-    - Instale o cURL
-    - No Linux(Debian based - Ubuntu/Mint): `apt install curl`
-    - No Windows: Não sei...
+- Instale o cURL
+- No Linux(Debian based - Ubuntu/Mint): `apt install curl`
+- No Windows: Não sei...
 
-    - Para:
-        - Criar um user (não precisa mandar nenhum dado (mas pode se quiser -- veja abaixo)):
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":null,"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud`
+- Para:
+  - Criar um user (não precisa mandar nenhum dado (mas pode se quiser -- veja abaixo)):
+    ##### - Envie para o backend:
+        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":null,"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
 
-            - Resposta do backend:
-    `{"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},"status":"OK"}`
-
-
-        - Criar um user (mandando dados do mesmo):
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":{"id":0,"nome":"","sobrenome":"","datanas":"0000-01-01","sexo":"0","tipo":"0","login":"","senha":""},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud`
-
-            - Resposta do backend:
-    `{"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},"status":"OK"}`
+    - Resposta do backend:
+    {"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},"status":"OK"}
 
 
-        - Ler um user (precisa indicar a 'id' do user):
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"read","data":{"id":1},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud`
+  - Criar um user (mandando dados do mesmo):
+    ##### - Envie para o backend:
+        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":{"id":0,"nome":"","sobrenome":"","datanas":"0000-01-01","sexo":"0","tipo":"0","login":"","senha":""},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
 
-            - Resposta do backend:
-    `{"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":13,"sobrenome":"","sexo":0,"login":""},"status":"OK"}`
-
-
-        - Atualizar um user (precisa indicar a 'id' do user e os campos que deseja atualizar):
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"update","data":{"id":1,"nome":"Paulo","sobrenome":"Griebler","datanas":"1974-03-28","sexo":"1","tipo":"5","login":"griebler","senha":"12345678"},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud`
-
-             - Resposta do backend:
-   `{"msg":"","data":{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":1,"sobrenome":"Griebler","sexo":1,"login":"griebler"},"status":"OK"}`
+    - Resposta do backend:
+    {"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},"status":"OK"}
 
 
-        - Deletar um user (precisa indicar a 'id' do user):
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete","data":{"id":1},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud`
+  - Ler um user (precisa indicar a 'id' do user):
+      ##### - Envie para o backend:
+        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"read","data":{"id":1},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
 
-            - Resposta do backend:
-   `{"msg":"","status":"OK"}`
-
-
-        - Deletar todos os users:
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete_all","data":null},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud`
-
-            - Resposta do backend:
-   `{"msg":"","status":"OK"}`
+    - Resposta do backend:
+    {"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":13,"sobrenome":"","sexo":0,"login":""},"status":"OK"}
 
 
-        - Listar todos os users:
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud`
+  - Atualizar um user (precisa indicar a 'id' do user e os campos que deseja atualizar):
+      ##### - Envie para o backend:
+          curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"update","data":{"id":1,"nome":"Paulo","sobrenome":"Griebler","datanas":"1974-03-28","sexo":"1","tipo":"5","login":"griebler","senha":"12345678"},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
 
-            - Resposta do backend:
-    `{"msg":"","data":{"array":[{"senha":"","tipo":0,"datanas":"","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":2,"sobrenome":"Griebler Júnior","sexo":1,"login":"griebler"}]},"status":"OK"}`
+    - Resposta do backend:
+   {"msg":"","data":{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":1,"sobrenome":"Griebler","sexo":1,"login":"griebler"},"status":"OK"}
 
 
-        - Listar um user com uma condição específica:
-            - Envie para o backend:
-   `curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":"WHERE nome='Paulo'"}' http://168.0.126.147:64000/app/endpoint/crud`
+  - Deletar um user (precisa indicar a 'id' do user):
+      ##### - Envie para o backend:
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete","data":{"id":1},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
 
-            - Resposta do backend:
-    `{"msg":"","data":{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":2,"sobrenome":"Griebler Júnior","sexo":1,"login":"griebler"},"status":"OK"}`
+    - Resposta do backend:
+   {"msg":"","status":"OK"}
+
+
+  - Deletar todos os users:
+      ##### - Envie para o backend:
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete_all","data":null},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+
+  - Resposta do backend:
+  {"msg":"","status":"OK"}
+
+
+  - Listar todos os users:
+      ##### - Envie para o backend:
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+
+    - Resposta do backend:
+    {"msg":"","data":{"array":[{"senha":"","tipo":0,"datanas":"","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":2,"sobrenome":"Griebler Júnior","sexo":1,"login":"griebler"}]},"status":"OK"}
+
+
+  - Listar um user com uma condição específica:
+      ##### - Envie para o backend:
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":"WHERE nome='Paulo'"}' http://168.0.126.147:64000/app/endpoint/crud
+
+    - Resposta do backend:
+    {"msg":"","data":{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":2,"sobrenome":"Griebler Júnior","sexo":1,"login":"griebler"},"status":"OK"}
 
 
 
