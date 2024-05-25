@@ -6,5 +6,17 @@ Objetivos:
 
 	
 Todo:
+
+	- SSL
+	- Login
+	- Sessões
+	- Classe Paciente
+	- Classe Médico
+	- Classe Técnico em Radiologia
+	- Classe Técnico em Enfermagem
+	- Classe Enfermeiro
+	- Classe Exame
+	- Classe DICOM
+	- ?
 	
 	

@@ -72,7 +72,7 @@ Se der certo deve aparecer no console:<br>
 - Para:
   - Criar um user (não precisa mandar nenhum dado (mas pode se quiser -- veja abaixo)):
     ##### - Envie para o backend:
-        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":null,"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":null,"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
     - Resposta do backend:
     {"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},"status":"OK"}
@@ -80,7 +80,7 @@ Se der certo deve aparecer no console:<br>
 
   - Criar um user (mandando dados do mesmo):
     ##### - Envie para o backend:
-        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":{"id":0,"nome":"","sobrenome":"","datanas":"0000-01-01","sexo":"0","tipo":"0","login":"","senha":""},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":{"id":0,"nome":"","sobrenome":"","datanas":"0000-01-01","sexo":"0","tipo":"0","login":"","senha":""},"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
     - Resposta do backend:
     {"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},"status":"OK"}
@@ -88,7 +88,7 @@ Se der certo deve aparecer no console:<br>
 
   - Ler um user (precisa indicar a 'id' do user):
       ##### - Envie para o backend:
-        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"read","data":{"id":1},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+        curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"read","data":{"id":1},"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
     - Resposta do backend:
     {"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":13,"sobrenome":"","sexo":0,"login":""},"status":"OK"}
@@ -96,7 +96,7 @@ Se der certo deve aparecer no console:<br>
 
   - Atualizar um user (precisa indicar a 'id' do user e os campos que deseja atualizar):
       ##### - Envie para o backend:
-          curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"update","data":{"id":1,"nome":"Paulo","sobrenome":"Griebler","datanas":"1974-03-28","sexo":"1","tipo":"5","login":"griebler","senha":"12345678"},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+          curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"update","data":{"id":1,"nome":"Paulo","sobrenome":"Griebler","datanas":"1974-03-28","sexo":"1","tipo":"5","login":"griebler","senha":"12345678"},"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
     - Resposta do backend:
    {"msg":"","data":{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":1,"sobrenome":"Griebler","sexo":1,"login":"griebler"},"status":"OK"}
@@ -104,7 +104,7 @@ Se der certo deve aparecer no console:<br>
 
   - Deletar um user (precisa indicar a 'id' do user):
       ##### - Envie para o backend:
-           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete","data":{"id":1},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete","data":{"id":1},"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
     - Resposta do backend:
    {"msg":"","status":"OK"}
@@ -112,7 +112,7 @@ Se der certo deve aparecer no console:<br>
 
   - Deletar todos os users:
       ##### - Envie para o backend:
-           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete_all","data":null},"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"delete_all","data":null},"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
   - Resposta do backend:
   {"msg":"","status":"OK"}
@@ -120,7 +120,7 @@ Se der certo deve aparecer no console:<br>
 
   - Listar todos os users:
       ##### - Envie para o backend:
-           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":null}' http://168.0.126.147:64000/app/endpoint/crud
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
     - Resposta do backend:
     {"msg":"","data":{"array":[{"senha":"","tipo":0,"datanas":"","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":2,"sobrenome":"Griebler Júnior","sexo":1,"login":"griebler"}]},"status":"OK"}
@@ -128,7 +128,7 @@ Se der certo deve aparecer no console:<br>
 
   - Listar um user com uma condição específica:
       ##### - Envie para o backend:
-           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":"WHERE nome='Paulo'"}' http://168.0.126.147:64000/app/endpoint/crud
+           curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"list","data":null,"condiction":"WHERE nome='Paulo'"}' http://127.0.0.1:4000/app/endpoint/crud
 
     - Resposta do backend:
     {"msg":"","data":{"senha":"12345678","tipo":5,"datanas":"1974-03-28","nome":"Paulo","id":2,"sobrenome":"Griebler Júnior","sexo":1,"login":"griebler"},"status":"OK"}
