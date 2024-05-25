@@ -1,23 +1,23 @@
 # SysImg - Backend
-    Construído usando a linguagem Java, servidor web Jetty, servlets e banco de dados MySQL usando JDBC.
+Construído usando a linguagem Java, servidor web Jetty, servlets e banco de dados MySQL usando JDBC.
 
 ## Para rodar o backend:
 
 ### 0 - Se tiver firewall configure o mesmo para aceitar as conexões nas respectivas portas:
 
 ### 1 - Crie uma database do MySQL:
-    - Instale o MySQL
+- Instale o MySQL
     - No Linux(Debian based - Ubuntu/Mint): `apt install mariadb-server`     <--- Nome do MySQL no Linux
     - No Windows: Não sei...
     - No console entre no cliente mysql usando: `mysql`
     - Vai solicitar a senha do usuário root (linux) ou administrador (windows)
-    - Dentro deste cliente (mysql) copie e cole as seguintes linhas:
-        `CREATE DATABASE sysimg;`
-        `CREATE DATABASE sysimg_des;`
-        `CREATE USER 'sysimg'@'localhost' IDENTIFIED BY 'n2Qi4RWl';`
-        `CREATE USER 'sysimg_des'@'localhost' IDENTIFIED BY 'D8yx3Rk2';`
-        `GRANT ALL PRIVILEGES ON sysimg.* TO 'sysimg'@'localhost' WITH GRANT OPTION;`
-        `GRANT ALL PRIVILEGES ON sysimg_des.* TO 'sysimg_des'@'localhost' WITH GRANT OPTION;`
+#### Dentro deste cliente (mysql) copie e cole as seguintes linhas:
+    CREATE DATABASE sysimg;
+    CREATE DATABASE sysimg_des;
+    CREATE USER 'sysimg'@'localhost' IDENTIFIED BY 'n2Qi4RWl';
+    CREATE USER 'sysimg_des'@'localhost' IDENTIFIED BY 'D8yx3Rk2';
+    GRANT ALL PRIVILEGES ON sysimg.* TO 'sysimg'@'localhost' WITH GRANT OPTION;
+    GRANT ALL PRIVILEGES ON sysimg_des.* TO 'sysimg_des'@'localhost' WITH GRANT OPTION;`
 
 
 
