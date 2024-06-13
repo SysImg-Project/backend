@@ -5,6 +5,14 @@
             http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--Inserido por Rodrigo Pires: para poder encontrar a dependência do dcm4che(abaixo) -->
+    <repositories>
+        <repository>
+            <id>jfrog-dcm4che</id>
+            <url>https://www.dcm4che.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <groupId>org.example</groupId>
     <artifactId>JavaServlet</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -40,6 +48,23 @@
             <version>5.9.1</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Inserido por Rodrigo Pires:
+        https://mvnrepository.com/artifact/org.dcm4che/dcm4che-core -->
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-core</artifactId>
+            <version>5.22.6</version>
+        </dependency>
+
+        <!-- Inserido por Rodrigo Pires: em 04/06/2024 -->
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-imageio</artifactId>
+            <version>5.22.6</version>
+        </dependency>
+
+
 
         <!--Adicionado para resolver o problema: java.lang.ClassNotFoundException: org.eclipse.jetty.servlets.CrossOriginFilter
         https://stackoverflow.com/questions/27608961/eclipse-jetty-plugin-cross-origin-support-class-not-found-->
@@ -87,8 +112,10 @@
                 <version>11.0.20</version>
                 <configuration>
                     <httpConnector>
-                        <host>192.168.1.20</host>
-                        <port>4100</port>
+                        <!--<host>192.168.1.20</host>-->
+                        <!--<host>192.168.0.20</host>-->
+                        <host>195.35.43.63</host>
+                        <port>4000</port>
                     </httpConnector>
                     <webApp>
                         <contextPath>/app</contextPath>

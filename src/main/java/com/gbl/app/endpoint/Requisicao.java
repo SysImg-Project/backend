@@ -1,8 +1,17 @@
+// UNISINOS
+// Curso: Ciência da Computação - Híbrido
+// Atividade Acadêmica - Estágio
+// Módulo X
+// Tarefa: SysImg
+// Data: 25/05/2024
+// Professor:
+// Aluno: Paulo Griebler Júnior
+// Registro Acadêmico: 1930669
+
+
 package com.gbl.app.endpoint;
 
-
 import jakarta.servlet.ServletConfig;
-
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

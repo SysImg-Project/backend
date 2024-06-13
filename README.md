@@ -11,15 +11,17 @@ Construído usando a linguagem Java, servidor web Jetty, servlets e banco de dad
     - No Windows: Não sei...
     - No console entre no cliente mysql usando: `mysql`
     - Vai solicitar a senha do usuário root (linux) ou administrador (windows)
+
 #### Dentro deste cliente (mysql) copie e cole as seguintes linhas:
     CREATE DATABASE sysimg;
     CREATE DATABASE sysimg_des;
+    CREATE DATABASE sysimg_tst;
     CREATE USER 'sysimg'@'localhost' IDENTIFIED BY 'n2Qi4RWl';
     CREATE USER 'sysimg_des'@'localhost' IDENTIFIED BY 'D8yx3Rk2';
+    CREATE USER 'sysimg_tst'@'localhost' IDENTIFIED BY '3Nwqi89L';
     GRANT ALL PRIVILEGES ON sysimg.* TO 'sysimg'@'localhost' WITH GRANT OPTION;
-    GRANT ALL PRIVILEGES ON sysimg_des.* TO 'sysimg_des'@'localhost' WITH GRANT OPTION;`
-
-
+    GRANT ALL PRIVILEGES ON sysimg_des.* TO 'sysimg_des'@'localhost' WITH GRANT OPTION;
+    GRANT ALL PRIVILEGES ON sysimg_tst.* TO 'sysimg_tst'@'localhost' WITH GRANT OPTION;
 
 ### 2 - Defina o IP e a porta desejada:
 Altere o arquivo `pom.xml`.
@@ -70,11 +72,12 @@ Se der certo deve aparecer no console:<br>
 - No Windows: Não sei...
 
 - Para:
-  - Criar um user (não precisa mandar nenhum dado (mas pode se quiser -- veja abaixo)):
-    ##### - Envie para o backend:
+
+  - Criar um user (não precisa mandar nenhum dado (mas pode se quiser -- veja abaixo)): ### NÃO IMPLEMENTADO AINDA !!!
+    ##### - Envie para o backend: ### NÃO IMPLEMENTADO AINDA !!!
         curl --header "Content-Type: application/json" --header "Accept: application/json" --data '{"object":"user","action":"create","data":null,"condiction":null}' http://127.0.0.1:4000/app/endpoint/crud
 
-    - Resposta do backend:
+    - Resposta do backend: ### NÃO IMPLEMENTADO AINDA !!!
     {"msg":"","data":{"senha":"","tipo":0,"datanas":"0000-01-01","nome":"","id":1,"sobrenome":"","sexo":0,"login":""},"status":"OK"}
 
 

@@ -19,7 +19,7 @@ import java.sql.*;
 
 
 // Classe que deve ser herdada por todas as classes que forem representar modelos de objetos (Ex.: Pessoa, Paciente, Usuario) que forem precisar do armazenamento dos mesmos na DB
-public class Crud implements ICrud {
+public class Crud implements ICrud, ITable, IJson { // Necessário que implemente ICrud para poder os métodos definidos no ICrud no CRUD<T> que vai ser instanciado no endpoint -- uso Generics para evitar duplicação de código
     //private Log log; // Instância do objeto Log -- para logs
     //private DB db; // Instância do objeto DB -- para uso da database
     protected Log log; // Instância do objeto Log -- para logs

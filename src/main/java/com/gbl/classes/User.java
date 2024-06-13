@@ -12,7 +12,7 @@ package com.gbl.classes;
 import java.time.LocalDate;
 import org.json.*;
 import java.sql.*;
-import java.util.Vector; // Para list()
+//import java.util.Vector; // Para list() -- Não precisa disto !
 import com.gbl.RetornoCrud;
 //import com.gbl.classes.Pessoa;
 
@@ -286,9 +286,12 @@ public class User extends Pessoa {
             PreparedStatement selectStatement = conn.prepareStatement(comando);
             ResultSet result = selectStatement.executeQuery(); //Returns: a ResultSet object that contains the data produced by the query; never null
 
-            Vector<User> vec = new Vector<User>();
+            //Vector<User> vec = new Vector<User>(); -- Não precisa disto !
+            JSONObject json = new JSONObject();
+            JSONArray jsonArr = new JSONArray();
             if (result.next()) { // Significa que tem resultados
                 do { // Recebe as colunas que estão dentro desta linha
+                    log.debN("result.getInt(\"id\") ="+result.getInt("id")); // Debug
                     this.setId(result.getInt("id"));
                     this.setNome(result.getString("nome"));
                     this.setSobreNome(result.getString("sobrenome"));
@@ -314,24 +317,25 @@ public class User extends Pessoa {
                     this.setTipoInt(result.getInt("tipo")); // Não existe getTinyInt()
                     this.setLogin(result.getString("login"));
                     this.setSenha(result.getString("senha"));
-                    vec.add(this); // Adiciona o objeto atualizado no vetor
+                    //vec.add(this); // Adiciona o objeto atualizado no vetor -- Não precisa disto !
+                    jsonArr.put(toJSON()); // Pode fazer direto isso !
                     }
                 }
                 while (result.next()); // Passa para a próxima linha (row)
                 // Retorna o resultado desta ação:
-                JSONObject json = new JSONObject();
-                JSONArray jsonArr = new JSONArray();
                 //String json = "\"array\": [";
 
                 // Popula o objeto json com os registros que satisfazem a condição:
-                for (int i = 0; i < vec.size(); i++) {
-                    //log.dbN("i ="+i); // Debug
-                    jsonArr.put(vec.get(i).toJSON());
+                /*for (int i = 0; i < vec.size(); i++) {
+                    log.debN("i ="+i); // Debug
+                    // Antes de chamar 'toJSON()' precisa atualizar os valores deste User usando
+                    log.debN("vec.get("+i+").toJSON() ="+vec.get(i).toJSON());
+                    jsonArr.put(vec.get(i).toJSON()); // Isso não funciona !!! Simplesmente pega o último valor em 'this' e cria Strings JSON com eles -- repete sempre o último valor que foi armazenado em this
                     //json += vec.get(i).toJSON().toString();
                     //if (i == vec.size() - 1) json += " ]";
                     //else json += ", ";
-                    //log.dbN("jsonArr.toString() ="+jsonArr.toString()); // Debug
-                }
+                    log.dbN("jsonArr.toString() ="+jsonArr.toString()); // Debug
+                }*/ // DELETAR !!!
                 //json.put("array", jsonArr.toString()); // Põe o Array de JSONs dentro do Obj. json
                 json.put("array", jsonArr);
 

@@ -18,5 +18,14 @@ Todo:
 	- Classe Exame
 	- Classe DICOM
 	- ?
+
+	Relacionamentos:
+	1 Paciente tem N Exame
+	1 Exame é de 1 Paciente
+	Solução: Assinalar em Exame a ID do Paciente e usar 'list' em Exame para pesquisar todos os exames com 'pacienteId' = X
+
+	1 Exame tem N DICOM
+	1 DICOM é de 1 Exame
+	Solução Assinalar em DICOM a ID do Exame e usar 'list' em DICOM para pesquisar todos os exames com 'exameId' = X
 	
 	

@@ -1,3 +1,13 @@
+// UNISINOS
+// Curso: Ciência da Computação - Híbrido
+// Atividade Acadêmica - Estágio
+// Módulo X
+// Tarefa: SysImg
+// Data: 25/05/2024
+// Professor:
+// Aluno: Paulo Griebler Júnior
+// Registro Acadêmico: 1930669
+
 package com.gbl.app.endpoint;
 
 import jakarta.servlet.annotation.WebServlet;
@@ -166,7 +176,8 @@ public class Crud extends HttpServlet {
             //String data = jsonRecebido.getString("data"); //org.json.JSONException: JSONObject["data"] is not a string (class org.json.JSONObject).
             //JSONObject 	getJSONObject(String key) Get the JSONObject value associated with a key
 
-            JSONObject jsonEnviado = new JSONObject(); // A resposta !
+            JSONObject jsonEnviado = new JSONObject(); // A resposta ! // DELETAR
+            CrudAux crudAux = new CrudAux();
 
             switch(action) {
                 case "create": {
@@ -174,60 +185,28 @@ public class Crud extends HttpServlet {
                     JSONObject dataObj = jsonRecebido.getJSONObject("data");
                     switch (object) {
                         case "user": {
-                            log.debN("Antes de: User user = new User();");
-                            //public static LocalDate parse(CharSequence text)
-                            //LocalDate datanas = LocalDate.parse("0000-01-01"); // "0000-00-00" ==> não dá --> java.time.format.DateTimeParseException: Text '0000-00-00' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 0
-
-                            /*User user = new User(0, dataObj.getString("nome"), dataObj.getString("sobrenome"), LocalDate.parse(dataObj.getString("datanas")), dataObj.getInt("sexo"), dataObj.getInt("tipo"), dataObj.getString("login"), dataObj.getString("senha"));*/
-                            // Mais fácil usar o construtor vazio e depois ir preenchendo os campos para poder fazer as conversões adequadamente !!!
-                            User user = new User();
-                            user.setId(0);
-                            user.setNome(dataObj.getString("nome"));
-                            user.setSobreNome(dataObj.getString("sobrenome"));
-
-                            log.debN("dataObj.getString(\"datanas\") ="+ dataObj.getString("datanas")); // Debug
-
-                            user.setDatanasIso(dataObj.getString("datanas"));
-
-                            log.debN("user.getDatanasIso() ="+user.getDatanasIso()); // Debug
-
-                            user.setSexoInt(dataObj.getInt("sexo"));
-                            user.setTipoInt(dataObj.getInt("tipo"));
-                            user.setLogin(dataObj.getString("login"));
-                            user.setSenha(dataObj.getString("senha"));
-
-                            log.debN("Antes de: RetornoCrud ret = user.create();");
-                            RetornoCrud ret = user.create();
-
-                            //Devolve para o cliente uma resposta em JSON:
-                            if (ret.getSucesso()) { // OK - conseguiu criar o novo objeto
-                                /*"{"status":"OK",
-                                "msg": "",
-                                "data": {
-                                "id":1,
-                                "nome": "Paulo",
-                                "sobreNome":"Griebler Júnior,
-                                "datanas": "28/03/1974",
-                                "sexo": 1,
-                                "login":"griebler",
-                                "senha":"12345678"
-                                }}"*/ // JSON a ser enviado
-                                // JSONObject 	put(String key, Object value) Put a key/value pair in the JSONObject
-                                jsonEnviado.put("status", "OK");
-                                jsonEnviado.put("msg", ret.getMsg());
-                                jsonEnviado.put("data", ret.getJson());
-                            }
-                            else { // Erro
-                                /*"{"status":"Error",
-                                "msg": "Não foi possível criar um registro do tipo "Usuario" na database. Motivo: erro de comunicação com a database.",
-                                "data": {}
-                                }"*/ // JSON a ser enviado
-                                jsonEnviado.put("status", "Error");
-                                jsonEnviado.put("msg", ret.getMsg());
-                                jsonEnviado.put("data", "{}");
-                            }
-                            out.print(jsonEnviado.toString());
-                            break;
+                            out.print(crudAux.createUser(dataObj));
+                            return;
+                        }
+                        case "recepcionista": {
+                            out.print(crudAux.createRecepcionista(dataObj));
+                            return;
+                        }
+                        case "paciente": {
+                            out.print(crudAux.createPaciente(dataObj));
+                            return;
+                        }
+                        case "exame": {
+                            out.print(crudAux.createExame(dataObj));
+                            return;
+                        }
+                        case "dicom": {
+                            out.print(crudAux.createDICOM(dataObj));
+                            return;
+                        }
+                        case "medico": {
+                            out.print(crudAux.createMedico(dataObj));
+                            return;
                         }
                         default: {
                             String msg = "###Erro: Em Crud.java: - O 'object' '"+object+"' não existe !";
@@ -239,49 +218,35 @@ public class Crud extends HttpServlet {
                             return;
                         }
                     }
-                    break;
+                    // break; unreachable statement
                 }
                 case "read": {
                     log.debN("Entrou em: case \"read\":");
                     JSONObject dataObj = jsonRecebido.getJSONObject("data");
                     switch (object) {
                         case "user": {
-                            log.debN("Antes de: User user = new User();");
-                            User user = new User(); // Usa o construtor vazio pois vai criar um usuário -- com construtor vazio não está dando certo !
-                            log.debN("Antes de: RetornoCrud ret = user.read();");
-                            RetornoCrud ret = user.read(dataObj.getInt("id"));
-
-                            //Devolve para o cliente uma resposta em JSON:
-                            if (ret.getSucesso()) { // OK - conseguiu LER o novo objeto
-                                /*"{"status":"OK",
-                                "msg": "",
-                                "data": {
-                                "id":1,
-                                "nome": "Paulo",
-                                "sobreNome":"Griebler Júnior,
-                                "datanas": "28/03/1974",
-                                "sexo": 1,
-                                "login":"griebler",
-                                "senha":"12345678"
-                                }}"*/ // JSON a ser enviado
-                                // JSONObject 	put(String key, Object value) Put a key/value pair in the JSONObject
-                                jsonEnviado.put("status", "OK");
-                                jsonEnviado.put("msg", ret.getMsg());
-                                jsonEnviado.put("data", ret.getJson());
-                            }
-                            else { // Erro
-                                /*"{"status":"Error",
-                                "msg": "Não foi possível LER um registro do tipo "Usuario" na database. Motivo: erro de comunicação com a database.",
-                                "data": {}
-                                }"*/ // JSON a ser enviado
-                                jsonEnviado.put("status", "Error");
-                                String msg = "Não foi possível ler um registro do tipo 'User' na database. Motivo: ";
-                                jsonEnviado.put("msg", msg+ret.getMsg());
-                                jsonEnviado.put("data", "{}");
-                            }
-                            out.print(jsonEnviado.toString());
+                            out.print(crudAux.readUser(dataObj));
                             return;
-                            //break; // unreachable statement
+                        }
+                        case "recepcionista": {
+                            out.print(crudAux.readRecepcionista(dataObj));
+                            return;
+                        }
+                        case "paciente": {
+                            out.print(crudAux.readPaciente(dataObj));
+                            return;
+                        }
+                        case "exame": {
+                            out.print(crudAux.readExame(dataObj));
+                            return;
+                        }
+                        case "dicom": {
+                            out.print(crudAux.readDICOM(dataObj));
+                            return;
+                        }
+                        case "medico": {
+                            out.print(crudAux.readMedico(dataObj));
+                            return;
                         }
                         default: {
                             String msg = "###Erro: Em Crud.java: - O 'object' '"+object+"' não existe !";
@@ -300,52 +265,28 @@ public class Crud extends HttpServlet {
                     JSONObject dataObj = jsonRecebido.getJSONObject("data");
                     switch (object) {
                         case "user": {
-                            log.debN("Antes de: User user = new User();");
-                            //LocalDate datanas = LocalDate.parse("0000-01-01"); // "0000-00-00" ==> não dá --> java.time.format.DateTimeParseException: Text '0000-00-00' could not be parsed: Invalid value for MonthOfYear (valid values 1 - 12): 0
-                            User user = new User();
-                            user.setId(dataObj.getInt("id"));
-                            user.setNome(dataObj.getString("nome"));
-                            user.setSobreNome(dataObj.getString("sobrenome"));
-                            user.setDatanasIso(dataObj.getString("datanas"));
-                            user.setSexoInt(dataObj.getInt("sexo"));
-                            user.setTipoInt(dataObj.getInt("tipo"));
-                            user.setLogin(dataObj.getString("login"));
-                            user.setSenha(dataObj.getString("senha"));
-
-                            log.debN("Antes de: RetornoCrud ret = user.update();");
-                            RetornoCrud ret = user.update(dataObj.getInt("id"));
-
-                            //Devolve para o cliente uma resposta em JSON:
-                            if (ret.getSucesso()) { // OK - conseguiu editar o novo objeto
-                                /*"{"status":"OK",
-                                "msg": "",
-                                "data": {
-                                "id":1,
-                                "nome": "Paulo",
-                                "sobreNome":"Griebler Júnior,
-                                "datanas": "28/03/1974",
-                                "sexo": 1,
-                                "login":"griebler",
-                                "senha":"12345678"
-                                }}"*/ // JSON a ser enviado
-                                // JSONObject 	put(String key, Object value) Put a key/value pair in the JSONObject
-                                jsonEnviado.put("status", "OK");
-                                jsonEnviado.put("msg", ret.getMsg());
-                                jsonEnviado.put("data", ret.getJson());
-                            }
-                            else { // Erro
-                                /*"{"status":"Error",
-                                "msg": "Não foi possível editar um registro do tipo "Usuario" na database. Motivo: erro de comunicação com a database.",
-                                "data": {}
-                                }"*/ // JSON a ser enviado
-                                jsonEnviado.put("status", "Error");
-                                String msg = "Não foi possível editar um registro do tipo 'User' na database. Motivo: ";
-                                jsonEnviado.put("msg", msg+ret.getMsg());
-                                jsonEnviado.put("data", "{}");
-                            }
-                            out.print(jsonEnviado.toString());
+                            out.print(crudAux.updateUser(dataObj));
                             return;
-                            //break; // unreachable statement
+                        }
+                        case "recepcionista": {
+                            out.print(crudAux.updateRecepcionista(dataObj));
+                            return;
+                        }
+                        case "paciente": {
+                            out.print(crudAux.updatePaciente(dataObj));
+                            return;
+                        }
+                        case "exame": {
+                            out.print(crudAux.updateExame(dataObj));
+                            return;
+                        }
+                        case "dicom": {
+                            out.print(crudAux.updateDICOM(dataObj));
+                            return;
+                        }
+                        case "medico": {
+                            out.print(crudAux.updateMedico(dataObj));
+                            return;
                         }
                         default: {
                             String msg = "###Erro: Em Crud.java: - O 'object' '"+object+"' não existe !";
@@ -364,42 +305,28 @@ public class Crud extends HttpServlet {
                     JSONObject dataObj = jsonRecebido.getJSONObject("data");
                     switch (object) {
                         case "user": {
-                            log.debN("Antes de: User user = new User();");
-                            User user = new User(); // Usa o construtor vazio pois vai DELETAR um usuário -- com construtor vazio não está dando certo !
-                            log.debN("Antes de: RetornoCrud ret = user.delete();");
-                            RetornoCrud ret = user.delete(dataObj.getInt("id"));
-
-                            //Devolve para o cliente uma resposta em JSON:
-                            if (ret.getSucesso()) { // OK - conseguiu DELETAR o objeto
-                                /*"{"status":"OK",
-                                "msg": "",
-                                "data": {
-                                "id":1,
-                                "nome": "Paulo",
-                                "sobreNome":"Griebler Júnior,
-                                "datanas": "28/03/1974",
-                                "sexo": 1,
-                                "login":"griebler",
-                                "senha":"12345678"
-                                }}"*/ // JSON a ser enviado
-                                // JSONObject 	put(String key, Object value) Put a key/value pair in the JSONObject
-                                jsonEnviado.put("status", "OK");
-                                jsonEnviado.put("msg", ret.getMsg());
-                                jsonEnviado.put("data", ret.getJson());
-                            }
-                            else { // Erro
-                                /*"{"status":"Error",
-                                "msg": "Não foi possível LER um registro do tipo "Usuario" na database. Motivo: erro de comunicação com a database.",
-                                "data": {}
-                                }"*/ // JSON a ser enviado
-                                jsonEnviado.put("status", "Error");
-                                String msg = "Não foi possível deletar um registro do tipo 'User' na database. Motivo: ";
-                                jsonEnviado.put("msg", msg+ret.getMsg());
-                                jsonEnviado.put("data", "{}");
-                            }
-                            out.print(jsonEnviado.toString());
+                            out.print(crudAux.deleteUser(dataObj));
                             return;
-                            //break; // unreachable statement
+                        }
+                        case "recepcionista": {
+                            out.print(crudAux.deleteRecepcionista(dataObj));
+                            return;
+                        }
+                        case "paciente": {
+                            out.print(crudAux.deletePaciente(dataObj));
+                            return;
+                        }
+                        case "exame": {
+                            out.print(crudAux.deleteExame(dataObj));
+                            return;
+                        }
+                        case "dicom": {
+                            out.print(crudAux.deleteDICOM(dataObj));
+                            return;
+                        }
+                        case "medico": {
+                            out.print(crudAux.deleteMedico(dataObj));
+                            return;
                         }
                         default: {
                             String msg = "###Erro: Em Crud.java: - O 'object' '"+object+"' não existe !";
@@ -418,35 +345,28 @@ public class Crud extends HttpServlet {
                     JSONObject dataObj = jsonRecebido.getJSONObject("data");
                     switch (object) {
                         case "user": {
-                            log.debN("Antes de: User user = new User();");
-                            User user = new User(); // Usa o construtor vazio pois vai DELETAR um usuário -- com construtor vazio não está dando certo !
-                            log.debN("Antes de: RetornoCrud ret = user.delete_all();");
-                            RetornoCrud ret = user.deleteAll();
-
-                            //Devolve para o cliente uma resposta em JSON:
-                            if (ret.getSucesso()) { // OK - conseguiu DELETAR TODOS os registros
-                                /*"{"status":"OK",
-                                "msg": "",
-                                "data": {}
-                                }"*/ // JSON a ser enviado
-                                // JSONObject 	put(String key, Object value) Put a key/value pair in the JSONObject
-                                jsonEnviado.put("status", "OK");
-                                jsonEnviado.put("msg", ret.getMsg());
-                                jsonEnviado.put("data", "{}");
-                            }
-                            else { // Erro
-                                /*"{"status":"Error",
-                                "msg": "Não foi possível DELETAR TODOS os registros do tipo "User" na database. Motivo: erro de comunicação com a database.",
-                                "data": {}
-                                }"*/ // JSON a ser enviado
-                                jsonEnviado.put("status", "Error");
-                                String msg = "Não foi possível deletar todos os registros do tipo 'User' na database. Motivo: ";
-                                jsonEnviado.put("msg", msg+ret.getMsg());
-                                jsonEnviado.put("data", "{}");
-                            }
-                            out.print(jsonEnviado.toString());
+                            out.print(crudAux.deleteAllUser(dataObj));
                             return;
-                            //break; // unreachable statement
+                        }
+                        case "recepcionista": {
+                            out.print(crudAux.deleteAllRecepcionista(dataObj));
+                            return;
+                        }
+                        case "paciente": {
+                            out.print(crudAux.deleteAllPaciente(dataObj));
+                            return;
+                        }
+                        case "exame": {
+                            out.print(crudAux.deleteAllExame(dataObj));
+                            return;
+                        }
+                        case "dicom": {
+                            out.print(crudAux.deleteAllDICOM(dataObj));
+                            return;
+                        }
+                        case "medico": {
+                            out.print(crudAux.deleteAllMedico(dataObj));
+                            return;
                         }
                         default: {
                             String msg = "###Erro: Em Crud.java: - O 'object' '"+object+"' não existe !";
@@ -462,45 +382,31 @@ public class Crud extends HttpServlet {
                 }
                 case "list": {
                     log.debN("Entrou em: case \"list\":");
-                    String condiction = jsonRecebido.getString("condiction"); // Só maqui em 'list' é que 'data' que vem no JSON recebido do cliente é tratado como String. Em todos as outras ações 'data' é um objeto JSON
+                    String condiction = jsonRecebido.getString("condiction"); // Só aqui em 'list' é que 'data' que vem no JSON recebido do cliente é tratado como String. Em todos as outras ações 'data' é um objeto JSON
                     switch (object) {
                         case "user": {
-                            log.debN("Antes de: User user = new User();");
-                            User user = new User(); // Usa o construtor vazio pois vai criar um usuário -- com construtor vazio não está dando certo !
-                            log.debN("Antes de: RetornoCrud ret = user.list("+condiction+");");
-                            RetornoCrud ret = user.list(condiction);
-
-                            //Devolve para o cliente uma resposta em JSON:
-                            if (ret.getSucesso()) { // OK - conseguiu LER o novo objeto
-                                /*"{"status":"OK",
-                                "msg": "",
-                                "data": {
-                                "id":1,
-                                "nome": "Paulo",
-                                "sobreNome":"Griebler Júnior,
-                                "datanas": "28/03/1974",
-                                "sexo": 1,
-                                "login":"griebler",
-                                "senha":"12345678"
-                                }}"*/ // JSON a ser enviado
-                                // JSONObject 	put(String key, Object value) Put a key/value pair in the JSONObject
-                                jsonEnviado.put("status", "OK");
-                                jsonEnviado.put("msg", ret.getMsg());
-                                jsonEnviado.put("data", ret.getJson());
-                            }
-                            else { // Erro
-                                /*"{"status":"Error",
-                                "msg": "Não foi possível LER um registro do tipo "Usuario" na database. Motivo: erro de comunicação com a database.",
-                                "data": {}
-                                }"*/ // JSON a ser enviado
-                                jsonEnviado.put("status", "Error");
-                                String msg = "Não foi possível listar registros do tipo 'User' na database. Motivo: ";
-                                jsonEnviado.put("msg", msg+ret.getMsg());
-                                jsonEnviado.put("data", "{}");
-                            }
-                            out.print(jsonEnviado.toString());
+                            out.print(crudAux.listUser(condiction));
                             return;
-                            //break; // unreachable statement
+                        }
+                        case "recepcionista": {
+                            out.print(crudAux.listRecepcionista(condiction));
+                            return;
+                        }
+                        case "paciente": {
+                            out.print(crudAux.listPaciente(condiction));
+                            return;
+                        }
+                        case "exame": {
+                            out.print(crudAux.listExame(condiction));
+                            return;
+                        }
+                        case "dicom": {
+                            out.print(crudAux.listDICOM(condiction));
+                            return;
+                        }
+                        case "medico": {
+                            out.print(crudAux.listMedico(condiction));
+                            return;
                         }
                         default: {
                             String msg = "###Erro: Em Crud.java: - O 'object' '"+object+"' não existe !";
@@ -529,9 +435,9 @@ public class Crud extends HttpServlet {
         catch(JSONException e) {
             System.out.println("###Aviso: Houve uma exceção ! --> LOCAL DA EXCEÇÃO : app/endpoint/Crud.java");
             System.out.println(e.toString());
-            //for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            //    System.out.println(ste + "\n");
-            //}
+            for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+                System.out.println(ste + "\n");
+            }
         }
     }
 }

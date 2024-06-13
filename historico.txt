@@ -199,10 +199,13 @@
 		###CRIADO NA MARIADB CONSOLE PELA CONTA ROOT NO ASTROLABIUM:
         CREATE DATABASE sysimg;
         CREATE DATABASE sysimg_des;
+        CREATE DATABASE sysimg_tst;
         CREATE USER 'sysimg'@'localhost' IDENTIFIED BY 'n2Qi4RWl';
         CREATE USER 'sysimg_des'@'localhost' IDENTIFIED BY 'D8yx3Rk2';
+        CREATE USER 'sysimg_tst'@'localhost' IDENTIFIED BY '3Nwqi89L';
         GRANT ALL PRIVILEGES ON sysimg.* TO 'sysimg'@'localhost' WITH GRANT OPTION;
         GRANT ALL PRIVILEGES ON sysimg_des.* TO 'sysimg_des'@'localhost' WITH GRANT OPTION;
+        GRANT ALL PRIVILEGES ON sysimg_tst.* TO 'sysimg_tst'@'localhost' WITH GRANT OPTION;
 
         Para evitar:
         java.sql.SQLException: null,  message from server: "Host '192.168.1.110' is not allowed to connect to this MariaDB server" -- porque agora estou conectando de outro computador
@@ -357,6 +360,8 @@ java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatem
 	19/05/2024:
 		- Liberada a v1.1.0 do backend.
 		- Faz CRUD e list da classe Usuario
+
+
 
 
 

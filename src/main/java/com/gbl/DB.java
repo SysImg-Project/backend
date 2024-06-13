@@ -39,6 +39,7 @@ public final class DB implements IDB {
         //log.logN("Entrou em: "); --> Não tem o objeto 'log' definido aqui ainda
         System.out.println("Entrou em: private DB()"); // Debug
         this.log = Log.getInstance(); // Obtêm uma instância do objeto Log -- para logs
+        //determinaMododeTrabalho(); // Não pode ser chamado aqui porque a INSTANCE ainda é null !
     }
 
     public static DB getInstance() { // Todo o Singleton deve conter um método fábrica estático que permita obter a instância
@@ -46,52 +47,35 @@ public final class DB implements IDB {
         System.out.println("Entrou em: public static DB getInstance()"); // Debug
         if (INSTANCE == null) {
             INSTANCE = new DB();
-            // Verifica o tipo de modo de execução conforme o que estiver no atributo 'modo' da classe Config:
-            switch(Config.getInstance().toStringModo()) {
-                case "PRODUCAO":
-                    INSTANCE.setarPropriedadesModoProducao(); // INSTANCE Pq ? --> non-static method setarPropriedadesModoProducao() cannot be referenced from a static context
-                    break;
-                case "DESENVOLVIMENTO":
-                    break;
-                case "TESTE":
-                    break;
-                case "INDEFINIDO":
-                default:
-                    INSTANCE.setarPropriedadesModoDesenvolvimento();
-                    break;
-            }
-            INSTANCE.conexaoStr = "jdbc:mysql://"+INSTANCE.dbHost+"/"+INSTANCE.dbNome+"?serverTimezone=UTC";
-            INSTANCE.conexaoLogin = INSTANCE.dbLogin;
-            INSTANCE.conexaoSenha = INSTANCE.dbSenha;
-            INSTANCE.log.db("LOCAL : public static DB getInstance() ==> ");
-            INSTANCE.log.dbN("INSTANCE.conexaoStr ="+INSTANCE.conexaoStr);
-            INSTANCE.log.dbN("INSTANCE.conexaoLogin ="+INSTANCE.conexaoLogin);
-            INSTANCE.log.dbN("INSTANCE.conexaoSenha ="+INSTANCE.conexaoSenha);
         }
-
-        // Só deve iniciar uma conexão se conn é null ! <== ISSO NÃO É CONFIRMADO ! - HIPÓTESE !!!
-        // Se criar uma nova conexão quando já existe uma: dá o erro: Gbl-LOG: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
-        //if (conn == null) {
-        //boolean isClosed() throws SQLException  Retrieves whether this Connection object has been closed.
-        /*if (INSTANCE.conn == null) {
-            INSTANCE.log.aviso("LOCAL DO AVISO: public void DB.() ==> ");
-            INSTANCE.log.avisoN("conn == null --> Vai iniciar a primeira conexão com a DB!"); // log erro (console e/ou arquivo)
-            INSTANCE.conectar();
-        }
-        else { // Só entra aqui se conn está válido (não é nulo !)
-            try {
-                if (INSTANCE.conn.isClosed()) {
-                    INSTANCE.log.dbN("A conexão com a DB está fechada !");
-                    INSTANCE.log.dbN("Iniciando uma nova conexão à DB.");
-                    INSTANCE.conectar();
-                }
-            }
-            catch(SQLException e) {
-                INSTANCE.log.erro("LOCAL DO ERRO: public void DB.() ==> ");
-                INSTANCE.log.erroN(e.toString()); // log erro (console e/ou arquivo)
-            }
-        }*/ // Del
+        determinaMododeTrabalho(); // Chama aqui porque a INSTANCE já deve estar definida (não nula !)
         return INSTANCE;
+    }
+
+    private static void determinaMododeTrabalho() {
+        // Verifica o tipo de modo de execução conforme o que estiver no atributo 'modo' da classe Config:
+        switch(Config.getInstance().toStringModo()) {
+            case "PRODUCAO":
+                INSTANCE.setarPropriedadesModoProducao(); // INSTANCE Pq ? --> non-static method setarPropriedadesModoProducao() cannot be referenced from a static context
+                break;
+            case "DESENVOLVIMENTO":
+                INSTANCE.setarPropriedadesModoDesenvolvimento();
+                break;
+            case "TESTE":
+                INSTANCE.setarPropriedadesModoTeste();
+                break;
+            case "INDEFINIDO":
+            default:
+                INSTANCE.setarPropriedadesModoDesenvolvimento();
+                break;
+        }
+        INSTANCE.conexaoStr = "jdbc:mysql://"+INSTANCE.dbHost+"/"+INSTANCE.dbNome+"?serverTimezone=UTC";
+        INSTANCE.conexaoLogin = INSTANCE.dbLogin;
+        INSTANCE.conexaoSenha = INSTANCE.dbSenha;
+        INSTANCE.log.db("LOCAL : public static DB getInstance() ==> ");
+        INSTANCE.log.dbN("INSTANCE.conexaoStr ="+INSTANCE.conexaoStr);
+        INSTANCE.log.dbN("INSTANCE.conexaoLogin ="+INSTANCE.conexaoLogin);
+        INSTANCE.log.dbN("INSTANCE.conexaoSenha ="+INSTANCE.conexaoSenha);
     }
 
     private void setarPropriedadesModoDesenvolvimento() {
@@ -105,6 +89,18 @@ public final class DB implements IDB {
         this.dbLogin = "sysimg_des";
         this.dbSenha = "D8yx3Rk2";
         this.dbNome = "sysimg_des";
+    }
+
+    private void setarPropriedadesModoTeste() {
+        log.logN("Entrou em: private void setarPropriedadesModoTeste()");
+        // Conforme foi criado no MySQL do astrolabium para o modo desenvolvimento:
+        //CREATE DATABASE sysimg_tst;
+        //CREATE USER 'sysimg_sys'@'localhost' IDENTIFIED BY '3Nwqi89L';
+        this.dbHost = "127.0.0.1";
+        this.dbPort = "3306";
+        this.dbLogin = "sysimg_tst";
+        this.dbSenha = "3Nwqi89L";
+        this.dbNome = "sysimg_tst";
     }
 
     private void setarPropriedadesModoProducao() {

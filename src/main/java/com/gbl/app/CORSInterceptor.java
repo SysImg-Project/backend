@@ -14,6 +14,9 @@ import java.io.IOException;
 
 import java.util.Collection; // Para: Collection<String> headers = resp.getHeaderNames();
 
+import com.gbl.Log;
+import com.gbl.Config; // Para: getAllowedOrigins()
+
 
 //https://stackoverflow.com/questions/58501852/cors-enable-in-servlet
 @WebFilter(asyncSupported = true, urlPatterns = { "/*" }) // Vale para todo o site não só no 'app/endpoint'
@@ -24,20 +27,27 @@ public class CORSInterceptor implements Filter {
     };*/
     //private static final String[] allowedOrigins = {"*"}; //java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "origin" is null --> gerou este erro porque coloquei {"*"} -- o método 'isAllowedOrigin()' não foi feito para trabalhar com isso ! --> aceita strings tipo "http://localhost:3000" mas não "*"
 
-    private static final String[] allowedOrigins = {"http://168.0.126.147:65100"}; // Endereço do Teste de Backend do SysImg -- não deu muito certo -- ainda -- java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "origin" is null at com.gbl.app.CORSInterceptor.isAllowedOrigin (CORSInterceptor.java:57)
+    //private static final String[] allowedOrigins = {"http://168.0.126.147:65100"}; // Endereço do Teste de Backend do SysImg -- não deu muito certo -- ainda -- java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "origin" is null at com.gbl.app.CORSInterceptor.isAllowedOrigin (CORSInterceptor.java:57) ==> Isso é gerenciado em Config
 
+    private Log log; // Instância do objeto Log -- para logs
+    private Config config; // Instância do objeto Config
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        this.log = Log.getInstance(); // Obtêm uma instância do objeto Log -- para logs
+        this.config = Config.getInstance(); // Obtêm uma instância do objeto Config
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
         String requestOrigin = request.getHeader("Origin");
-        System.out.println("Em com.gbl.app.CORSInterceptor: --> request.getHeader(\"Origin\") ="+request.getHeader("Origin")); // Debug --> request.getHeader("Origin") =null
+        log.debN("Em com.gbl.app.CORSInterceptor: --> request.getHeader(\"Origin\") ="+request.getHeader("Origin")); // Debug --> request.getHeader("Origin") =null
 
 
         //if(isAllowedOrigin(requestOrigin)) { // Aqui autoriza o CORS apenas se a origem for aquela solicitada... Porém se quiser autorizar inicialmente para qualquer lugar (não recomendável !)
         //if(true) { // Autoriza para todos os IPs -- só inicialmente - REVER !
-        if(isAllowedOrigin("http://168.0.126.147:65100")) { // Aqui autoriza o CORS apenas se a origem for aquela solicitada... Porém se quiser autorizar inicialmente para qualquer lugar (não recomendável !) --> Coloquei o endereço do cliente
+        //if(isAllowedOrigin("http://168.0.126.147:65100")) { // Aqui autoriza o CORS apenas se a origem for aquela solicitada... Porém se quiser autorizar inicialmente para qualquer lugar (não recomendável !) --> Coloquei o endereço do cliente
+        //if(isAllowedOrigin(config.getAllowedOrigins()[0])) {
+        if(isAllowedOrigin(requestOrigin)) {
             // Authorize the origin, all headers, and all methods
             //((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", requestOrigin);
             ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", "*"); // Pq 'requestOrigin' == null o que não estava gerando a inserção deste header na resposta para o cliente -- o que no meu ponto de vista bloqueava o CORS !!! ==> NA VERDADE AINDA NÃO É ISSO. O TESTE DE BACKEND CONTINUA NÃO CONSEGUINDO ACESSAR... (11/05/2024)
@@ -85,7 +95,8 @@ public class CORSInterceptor implements Filter {
     }
 
     private boolean isAllowedOrigin(String origin){
-        for (String allowedOrigin : allowedOrigins) {
+        for (String allowedOrigin : config.getAllowedOrigins()) {
+            if(origin == null) return true; // Pode acontecer da requestOrigin (que gera 'origin') ser nula quando ocorre o chamamento do backend pelo mesmo endereço onde ele está on-line, tipo numa verificação de funcionalidade local do backend
             if(origin.equals(allowedOrigin)) return true;
         }
         return false;

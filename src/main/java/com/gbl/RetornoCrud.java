@@ -17,6 +17,9 @@ public class RetornoCrud {
     private String msg;
     JSONObject json;
 
+    public RetornoCrud() {
+    }
+
     public RetornoCrud(boolean sucesso, String msg, JSONObject json) {
         this.sucesso = sucesso;
         this.msg = msg;
